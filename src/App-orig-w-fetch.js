@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import "./App.css";
 import List from "./components/List";
 import withListLoading from "./components/withListLoading";
@@ -13,23 +12,23 @@ function App() {
 
   useEffect(() => {
     setAppState({ loading: true });
-    const apiUrl = "https://api.github.com/users/cloudbound2/repos";
-    axios.get(apiUrl).then((repos) => {
-      const allRepos = repos.data;
-      setAppState({ loading: false, repos: allRepos });
-    });
+    const apiUrl = `https://api.github.com/users/cloudbound2/repos`;
+    fetch(apiUrl)
+      .then((res) => res.json())
+      .then((repos) => {
+        setAppState({ loading: false, repos: repos });
+      });
   }, [setAppState]);
   return (
     <div className="App">
       <div className="container">
         <h1>My Repositories</h1>
-        <h3>With Axios (a promise-based HTTP client for the browser and node.js)</h3>
-        Since Axios is promise-based, we can take advantage of async and await
-        for more readable and asynchronous code.
-        <br></br>
-        With Axios, we get the ability
-        to intercept and cancel request, it also has a built-in feature that
-        provides client-side protection against cross-site request forgery.
+        <h3>
+          With Fetch API, a browser in-built web API. 
+        </h3>
+          The Fetch API uses Request and Response objects (and other things involved with network requests), 
+          <br></br>as well as related concepts such as <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS">CORS</a> and 
+          the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers">HTTP Origin header</a> semantics.
       </div>
       <div className="repo-container">
         <ListLoading isLoading={appState.loading} repos={appState.repos} />
